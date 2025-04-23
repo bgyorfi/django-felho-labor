@@ -147,5 +147,4 @@ LOGIN_URL = 'login'
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True  # Session cookie csak HTTPS-en megy
-    CSRF_COOKIE_SECURE = True  
-    
+    CSRF_COOKIE_SECURE = True
