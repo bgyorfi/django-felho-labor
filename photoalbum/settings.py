@@ -144,3 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'photo_list'
 LOGOUT_REDIRECT_URL = 'photo_list'
 LOGIN_URL = 'login'
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True  # Session cookie csak HTTPS-en megy
+    CSRF_COOKIE_SECURE = True  
