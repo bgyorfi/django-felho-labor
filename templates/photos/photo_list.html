@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Fotók Listája{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Feltöltött Fotók</h1>
+    <a href="{% url 'photo_upload' %}" class="btn btn-primary">Új fotó feltöltése</a>
+</div>
+
+<div class="mb-3">
+    <strong>Rendezés:</strong>
+    <a href="?sort=name" class="btn btn-sm {% if current_sort == 'name' %}btn-info{% else %}btn-outline-secondary{% endif %}">Név (A-Z)</a>
+    <a href="?sort=-name" class="btn btn-sm {% if current_sort == '-name' %}btn-info{% else %}btn-outline-secondary{% endif %}">Név (Z-A)</a>
+    <a href="?sort=upload_date" class="btn btn-sm {% if current_sort == 'upload_date' %}btn-info{% else %}btn-outline-secondary{% endif %}">Dátum (Régi->Új)</a>
+    <a href="?sort=-upload_date" class="btn btn-sm {% if current_sort == '-upload_date' %}btn-info{% else %}btn-outline-secondary{% endif %}">Dátum (Új->Régi)</a>
+</div>
+
+{% if photos %}
+    <div class="list-group">
+        {% for photo in photos %}
+        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div>
+                <img src="{{ photo.image.url }}" alt="{{ photo.name }}" class="img-thumbnail thumbnail me-3">
+                <a href="{% url 'photo_detail' photo.pk %}" class="fw-bold">{{ photo.name }}</a>
+                <small class="text-muted d-block">Feltöltve: {{ photo.upload_date|date:"Y-m-d H:i" }}</small>
+            </div>
+            <div>
+                {% if user.is_authenticated and user == photo.owner %}
+                <a href="{% url 'photo_delete' photo.pk %}" class="btn btn-danger btn-sm">Törlés</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="alert alert-info">Még nincsenek feltöltött fotók. <a href="{% url 'photo_upload' %}">Tölts fel egyet!</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Fotó Feltöltése{% endblock %}
+
+{% block content %}
+<h1>Új Fotó Feltöltése</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }} {# Az űrlap mezőinek megjelenítése bekezdésekben #}
+    <button type="submit" class="btn btn-success">Feltöltés</button>
+    <a href="{% url 'photo_list' %}" class="btn btn-secondary">Mégse</a>
+</form>
+{% endblock %}

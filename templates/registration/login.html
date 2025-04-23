@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Bejelentkezés{% endblock %}
+
+{% block content %}
+  <h2>Bejelentkezés</h2>
+  {% if form.errors %}
+    <p class="alert alert-danger">A felhasználónév vagy jelszó hibás. Próbáld újra.</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p class="alert alert-warning">Már be vagy jelentkezve.</p>
+    {% else %}
+      <p class="alert alert-info">Kérjük, jelentkezz be, hogy lásd ezt az oldalt.</p>
+    {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Bejelentkezés</button>
+    <input type="hidden" name="next" value="{{ next }}"> {# Átirányítás login után #}
+  </form>
+  <p class="mt-3">Nincs még fiókod? <a href="{% url 'signup' %}">Regisztrálj!</a></p>
+  <p><a href="{% url 'password_reset' %}">Elfelejtetted a jelszavad?</a></p> {# Jelszó reset link #}
+{% endblock %}

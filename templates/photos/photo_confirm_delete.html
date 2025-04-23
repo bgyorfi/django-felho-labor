@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Törlés megerősítése{% endblock %}
+
+{% block content %}
+<h1>Törlés megerősítése</h1>
+<p>Biztosan törölni szeretnéd a(z) <strong>"{{ photo.name }}"</strong> nevű fotót?</p>
+<img src="{{ photo.image.url }}" alt="{{ photo.name }}" class="img-thumbnail thumbnail mb-3">
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Igen, törlés</button>
+    <a href="{% url 'photo_list' %}" class="btn btn-secondary">Mégse</a>
+</form>
+{% endblock %}
