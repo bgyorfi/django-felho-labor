@@ -17,12 +17,11 @@ from dotenv import load_dotenv # Import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', BASE_DIR / 'media')
 
 load_dotenv(BASE_DIR / '.env')
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default_insecure_key_for_build')
 DEBUG = os.environ.get('DEBUG', '0') == '1'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'photos.apps.PhotosConfig'
 ]
@@ -141,6 +141,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth rendszer átirányításai
-LOGIN_REDIRECT_URL = 'photo_list' # Sikeres bejelentkezés után ide irányít
-LOGOUT_REDIRECT_URL = 'photo_list' # Kijelentkezés után ide irányít
-LOGIN_URL = 'login' # Ha @login_required dob át, ide küldjön (django.contrib.auth.urls adja)
+LOGIN_REDIRECT_URL = 'photo_list'
+LOGOUT_REDIRECT_URL = 'photo_list'
+LOGIN_URL = 'login'
