@@ -146,5 +146,7 @@ LOGOUT_REDIRECT_URL = 'photo_list'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    SESSION_COOKIE_SECURE = True  # Session cookie csak HTTPS-en megy
+    SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_TRUSTED_ORIGINS = ['https://django-photo-project-gyorfib-dev.apps.rm1.0a51.p1.openshiftapps.com']
