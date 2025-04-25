@@ -1,17 +1,33 @@
 # docker-compose.yml (LOKÁLIS SQLite fejlesztéshez)
-# Ezt NEM használja az OpenShift!
-version: '3.8' # Ez a sor már nem kötelező
+version: '3.8' 
 
 services:
   web:
     build: .
-    # Helyi fejlesztéshez maradhat a runserver
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             gunicorn photoalbum.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - .:/app # Kód szinkronizálása
-      # Az SQLite fájl és a médiafájlok a konténeren belül jönnek létre (és a volume mount miatt a hoston is)
-      # Nincs szükség külön volume-ra lokálisan, ha a .: /app mount megvan
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media 
     ports:
       - "8000:8000"
     env_file:
-      - ./.env # Lokális .env használata
+      - ./.env
+    depends_on:
+      - db
+
+  db: 
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  postgres_data: # Adatbázis volume
+  static_volume: # Statikus fájlok volume
+  media_volume: # Médiafájlok volume
