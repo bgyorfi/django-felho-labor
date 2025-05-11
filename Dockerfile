@@ -25,4 +25,4 @@ RUN python manage.py collectstatic --noinput
 
 # Konténer indítási parancsa (Gunicorn használata productionben)
 # Az OpenShift S2I is általában Gunicornot használ, Dockerfile stratégiánál nekünk kell megadni
-CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "photoalbum.wsgi:application"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "photoalbum.wsgi:application", "--log-level", "debug"]
