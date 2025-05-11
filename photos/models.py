@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 class Photo(models.Model):
@@ -22,6 +23,7 @@ class Photo(models.Model):
         auto_now_add=True,
         verbose_name="Feltöltés dátuma"
     )
+    processed_s3_key = models.CharField(max_length=1024, blank=True, null=True) 
 
     def __str__(self):
         """String representation of the Photo object."""
@@ -30,4 +32,15 @@ class Photo(models.Model):
     class Meta:
         ordering = ['-upload_date'] # Alapértelmezett rendezés (legújabb elöl)
         verbose_name = "Photo"        
-        verbose_name_plural = "photos" #
+        verbose_name_plural = "photos" 
+
+   
+
+    @property
+    def display_image_url(self):
+        print(f"DEBUG (Photo Model PK {self.pk}): Generating display_image_url. Processed S3 Key: '{self.processed_s3_key}'") # Egyszerűbb print most
+        bucket_name = "djangophotoalbumbucket"
+        region_name = "eu-north-1"
+        url = f"https://{bucket_name}.s3.{region_name}.amazonaws.com/{self.processed_s3_key}"
+        print(f"DEBUG (Photo Model PK {self.pk}): Generated URL: {url}")
+        return url

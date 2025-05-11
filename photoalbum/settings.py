@@ -150,3 +150,6 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     CSRF_TRUSTED_ORIGINS = ['https://django-photo-project-gyorfib-dev.apps.rm1.0a51.p1.openshiftapps.com']
+
+
+API_GATEWAY_UPLOAD_URL="https://7w9dm6opki.execute-api.eu-north-1.amazonaws.com/dev/upload"
